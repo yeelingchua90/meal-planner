@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { BudgetBar } from '@/components/BudgetBar';
 import { ShoppingList } from '@/components/ShoppingList';
-import { recipes } from '@/data/recipes';
 import { weekMealPlan, DAYS, DayKey } from '@/data/mealPlan';
 import { ShoppingCart } from 'lucide-react';
 
@@ -23,12 +22,7 @@ function getWeekDateRange(): string {
 function getTotalWeekCost(): number {
   return DAYS.reduce((total, { key }) => {
     const day = weekMealPlan[key as DayKey];
-    const meals = [day.breakfastId, day.lunchId, day.dinnerId];
-    const cost = meals.reduce((s, id) => {
-      const r = recipes.find((r) => r.id === id);
-      return s + (r?.totalCostSGD ?? 0);
-    }, 0);
-    return total + cost;
+    return total + day.breakfast.totalCost + day.lunch.totalCost + day.dinner.totalCost;
   }, 0);
 }
 

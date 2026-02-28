@@ -2,17 +2,18 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { recipes, Recipe } from '@/data/recipes';
+import { ComposedMeal } from '@/data/recipes';
+import { allComposedMeals } from '@/data/mealPlan';
 import { RecipeSheet } from '@/components/RecipeSheet';
 import { Badge } from '@/components/ui/badge';
 import { formatCalories, formatCost } from '@/lib/utils';
 import { BookOpen, Flame } from 'lucide-react';
 
 type MealFilter = 'All' | 'breakfast' | 'lunch' | 'dinner';
-type CuisineFilter = 'All' | Recipe['cuisine'];
+type CuisineFilter = 'All' | 'Chinese' | 'Malay' | 'Indian' | 'Western' | 'Japanese' | 'Thai' | 'Universal';
 
 const MEAL_FILTERS: MealFilter[] = ['All', 'breakfast', 'lunch', 'dinner'];
-const CUISINE_FILTERS: (CuisineFilter)[] = ['All', 'Chinese', 'Malay', 'Indian', 'Western', 'Japanese', 'Thai'];
+const CUISINE_FILTERS: CuisineFilter[] = ['All', 'Chinese', 'Malay', 'Indian', 'Western', 'Japanese', 'Thai'];
 
 const MEAL_LABEL: Record<string, string> = {
   breakfast: 'Breakfast',
@@ -20,20 +21,32 @@ const MEAL_LABEL: Record<string, string> = {
   dinner: 'Dinner',
 };
 
+function getMealEmoji(meal: ComposedMeal): string {
+  return meal.breakfastComponent?.emoji
+    ?? meal.protein?.emoji
+    ?? meal.base?.emoji
+    ?? '🍽️';
+}
+
+function getMealDisplayName(meal: ComposedMeal): string {
+  if (meal.mealType === 'breakfast') return meal.name;
+  return meal.protein?.name ?? meal.name;
+}
+
 export default function RecipesPage() {
   const [mealFilter, setMealFilter] = useState<MealFilter>('All');
   const [cuisineFilter, setCuisineFilter] = useState<CuisineFilter>('All');
-  const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [selectedMeal, setSelectedMeal] = useState<ComposedMeal | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  const filtered = recipes.filter((r) => {
-    const matchMeal = mealFilter === 'All' || r.mealType === mealFilter;
-    const matchCuisine = cuisineFilter === 'All' || r.cuisine === cuisineFilter;
+  const filtered = allComposedMeals.filter((m) => {
+    const matchMeal = mealFilter === 'All' || m.mealType === mealFilter;
+    const matchCuisine = cuisineFilter === 'All' || m.cuisine === cuisineFilter;
     return matchMeal && matchCuisine;
   });
 
-  const openRecipe = (r: Recipe) => {
-    setSelectedRecipe(r);
+  const openMeal = (m: ComposedMeal) => {
+    setSelectedMeal(m);
     setSheetOpen(true);
   };
 
@@ -43,7 +56,7 @@ export default function RecipesPage() {
       <div className="mb-6 flex items-center gap-2">
         <BookOpen className="h-6 w-6 text-[#2563EB]" />
         <h1 className="text-2xl font-bold tracking-tight text-[#0A0A0A]">
-          Our Recipes
+          Our Meals
         </h1>
       </div>
 
@@ -87,40 +100,38 @@ export default function RecipesPage() {
         })}
       </div>
 
-      {/* Recipe grid */}
+      {/* Meal grid */}
       <motion.div layout className="grid grid-cols-2 gap-3">
         <AnimatePresence>
-          {filtered.map((recipe) => (
+          {filtered.map((meal) => (
             <motion.button
-              key={recipe.id}
+              key={meal.id}
               layout
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              onClick={() => openRecipe(recipe)}
+              onClick={() => openMeal(meal)}
               className="flex flex-col items-start rounded-2xl border border-[#E5E7EB] bg-white p-4 text-left shadow-sm hover:shadow-md transition-shadow"
             >
-              <span className="mb-2 text-4xl">{recipe.emoji}</span>
+              <span className="mb-2 text-4xl">{getMealEmoji(meal)}</span>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#6B7280] mb-0.5">
+                {MEAL_LABEL[meal.mealType]}
+              </p>
               <p className="text-sm font-bold leading-snug text-[#0A0A0A] line-clamp-2 min-h-[2.5rem]">
-                {recipe.name}
+                {getMealDisplayName(meal)}
               </p>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 <Badge className="rounded-full bg-[#F3F4F6] text-[#374151] text-xs hover:bg-[#E5E7EB]">
-                  {recipe.cuisine}
+                  {meal.cuisine}
                 </Badge>
-                {recipe.kidFriendly && (
-                  <Badge className="rounded-full bg-blue-50 text-blue-600 text-xs hover:bg-blue-100">
-                    👶
-                  </Badge>
-                )}
               </div>
               <div className="mt-2 flex items-center gap-2 text-xs text-[#6B7280]">
                 <Flame className="h-3 w-3 text-orange-400" />
-                <span>{formatCalories(recipe.calories)}</span>
+                <span>{formatCalories(meal.totalCalories)}</span>
               </div>
               <p className="mt-1 text-xs font-medium text-[#2563EB]">
-                {formatCost(recipe.totalCostSGD)}
+                {formatCost(meal.totalCost)}
               </p>
             </motion.button>
           ))}
@@ -130,12 +141,12 @@ export default function RecipesPage() {
       {filtered.length === 0 && (
         <div className="mt-20 text-center text-[#6B7280]">
           <p className="text-4xl mb-2">🍽️</p>
-          <p className="text-sm">No recipes match your filters.</p>
+          <p className="text-sm">No meals match your filters.</p>
         </div>
       )}
 
       <RecipeSheet
-        recipe={selectedRecipe}
+        meal={selectedMeal}
         open={sheetOpen}
         onClose={() => setSheetOpen(false)}
       />

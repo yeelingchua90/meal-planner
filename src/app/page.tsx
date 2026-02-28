@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DayTabs } from '@/components/DayTabs';
 import { MealCard } from '@/components/MealCard';
-import { recipes } from '@/data/recipes';
-import { weekMealPlan, DAYS, DayKey } from '@/data/mealPlan';
+import { weekMealPlan, DAYS, DayKey, allComposedMeals } from '@/data/mealPlan';
 import { formatCost } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
@@ -25,12 +24,7 @@ function getWeekDateRange(): string {
 function getTotalWeekCost(): number {
   return DAYS.reduce((total, { key }) => {
     const day = weekMealPlan[key as DayKey];
-    const meals = [day.breakfastId, day.lunchId, day.dinnerId];
-    const cost = meals.reduce((s, id) => {
-      const r = recipes.find((r) => r.id === id);
-      return s + (r?.totalCostSGD ?? 0);
-    }, 0);
-    return total + cost;
+    return total + day.breakfast.totalCost + day.lunch.totalCost + day.dinner.totalCost;
   }, 0);
 }
 
@@ -47,14 +41,10 @@ export default function WeeklyPlanPage() {
   const [activeDay, setActiveDay] = useState<DayKey>('mon');
 
   const dayPlan = weekMealPlan[activeDay];
-  const breakfastRecipe = recipes.find((r) => r.id === dayPlan.breakfastId)!;
-  const lunchRecipe = recipes.find((r) => r.id === dayPlan.lunchId)!;
-  const dinnerRecipe = recipes.find((r) => r.id === dayPlan.dinnerId)!;
-
   const meals = [
-    { recipe: breakfastRecipe, label: 'Breakfast' },
-    { recipe: lunchRecipe, label: 'Lunch' },
-    { recipe: dinnerRecipe, label: 'Dinner' },
+    { meal: dayPlan.breakfast, label: 'Breakfast' },
+    { meal: dayPlan.lunch,     label: 'Lunch'     },
+    { meal: dayPlan.dinner,    label: 'Dinner'    },
   ];
 
   const weekCost = getTotalWeekCost();
@@ -93,7 +83,7 @@ export default function WeeklyPlanPage() {
           transition={{ duration: 0.15 }}
           className="space-y-3"
         >
-          {meals.map(({ recipe, label }, i) => (
+          {meals.map(({ meal, label }, i) => (
             <motion.div
               key={`${activeDay}-${label}`}
               custom={i}
@@ -101,7 +91,7 @@ export default function WeeklyPlanPage() {
               initial="hidden"
               animate="visible"
             >
-              <MealCard recipe={recipe} label={label} allRecipes={recipes} />
+              <MealCard meal={meal} label={label} allMeals={allComposedMeals} />
             </motion.div>
           ))}
         </motion.div>

@@ -7,42 +7,45 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { MacroBar } from '@/components/MacroBar';
 import { RecipeSheet } from '@/components/RecipeSheet';
-import { Recipe } from '@/data/recipes';
-import { formatCalories, formatTime, formatCost } from '@/lib/utils';
-import { Shuffle, Clock, Flame } from 'lucide-react';
+import { ComposedMeal } from '@/data/recipes';
+import { formatCalories, formatCost } from '@/lib/utils';
+import { Shuffle, Flame } from 'lucide-react';
 import { useHousehold } from '@/contexts/HouseholdContext';
 
 interface MealCardProps {
-  recipe: Recipe;
+  meal: ComposedMeal;
   label: string;
-  allRecipes: Recipe[];
+  allMeals: ComposedMeal[];
 }
 
-export function MealCard({ recipe: initialRecipe, label, allRecipes }: MealCardProps) {
-  const [recipe, setRecipe] = useState(initialRecipe);
+export function MealCard({ meal: initialMeal, label, allMeals }: MealCardProps) {
+  const [meal, setMeal] = useState(initialMeal);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [swapping, setSwapping] = useState(false);
   const [key, setKey] = useState(0);
   const { members } = useHousehold();
-  const yeeling = members.find((m) => m.is_primary);
-  const coveragePct = yeeling
-    ? Math.round((recipe.calories / yeeling.nutrition.calories) * 100)
+  const primary = members.find((m) => m.is_primary);
+  const coveragePct = primary
+    ? Math.round((meal.totalCalories / primary.nutrition.calories) * 100)
     : null;
 
   const handleSwap = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const sameType = allRecipes.filter(
-      (r) => r.mealType === recipe.mealType && r.id !== recipe.id
-    );
+    const sameType = allMeals.filter((m) => m.mealType === meal.mealType && m.id !== meal.id);
     if (sameType.length === 0) return;
     const next = sameType[Math.floor(Math.random() * sameType.length)];
     setSwapping(true);
     setTimeout(() => {
-      setRecipe(next);
+      setMeal(next);
       setKey((k) => k + 1);
       setSwapping(false);
     }, 200);
   };
+
+  const isBreakfast = meal.mealType === 'breakfast';
+  const mainEmoji = isBreakfast
+    ? meal.breakfastComponent?.emoji
+    : meal.protein?.emoji ?? meal.base?.emoji ?? '🍽️';
 
   return (
     <>
@@ -69,20 +72,40 @@ export function MealCard({ recipe: initialRecipe, label, allRecipes }: MealCardP
 
               {/* Top row: emoji + info + swap */}
               <div className="flex items-start gap-3">
-                <span className="text-4xl leading-none">{recipe.emoji}</span>
+                <span className="text-4xl leading-none">{mainEmoji}</span>
+
                 <div className="flex-1 min-w-0">
-                  <p className="font-bold text-[#0A0A0A] leading-snug truncate">
-                    {recipe.name}
-                  </p>
+                  {isBreakfast ? (
+                    <p className="font-bold text-[#0A0A0A] leading-snug truncate">
+                      {meal.name}
+                    </p>
+                  ) : (
+                    <div className="space-y-0.5">
+                      {meal.base && (
+                        <p className="text-xs text-[#6B7280] truncate">
+                          {meal.base.emoji} {meal.base.name}
+                        </p>
+                      )}
+                      {meal.protein && (
+                        <p className="font-bold text-[#0A0A0A] leading-snug truncate">
+                          {meal.protein.name}
+                        </p>
+                      )}
+                      {meal.vegetable && (
+                        <p className="text-xs text-[#6B7280] truncate">
+                          {meal.vegetable.emoji} {meal.vegetable.name}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
                   <div className="mt-1.5 flex flex-wrap gap-1.5">
                     <Badge className="rounded-full bg-[#F3F4F6] text-[#374151] text-xs font-medium hover:bg-[#E5E7EB]">
-                      {recipe.cuisine}
-                    </Badge>
-                    <Badge className="rounded-full bg-[#F3F4F6] text-[#374151] text-xs font-medium hover:bg-[#E5E7EB]">
-                      {recipe.difficulty}
+                      {meal.cuisine}
                     </Badge>
                   </div>
                 </div>
+
                 <Button
                   size="icon"
                   variant="ghost"
@@ -98,29 +121,25 @@ export function MealCard({ recipe: initialRecipe, label, allRecipes }: MealCardP
               <div className="mt-3 flex items-center gap-4 text-xs text-[#6B7280]">
                 <span className="flex items-center gap-1">
                   <Flame className="h-3.5 w-3.5 text-orange-400" />
-                  {formatCalories(recipe.calories)}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Clock className="h-3.5 w-3.5 text-blue-400" />
-                  {formatTime(recipe.prepMins + recipe.cookMins)}
+                  {formatCalories(meal.totalCalories)}
                 </span>
                 <span className="ml-auto font-medium text-[#2563EB]">
-                  {formatCost(recipe.totalCostSGD)}
+                  {formatCost(meal.totalCost)}
                 </span>
               </div>
 
               {/* Macro bar */}
               <MacroBar
-                protein={recipe.protein}
-                carbs={recipe.carbs}
-                fat={recipe.fat}
+                protein={meal.totalProtein}
+                carbs={meal.totalCarbs}
+                fat={meal.totalFat}
                 className="mt-2"
               />
 
               {/* Nutrition coverage */}
               {coveragePct !== null && (
                 <p className="mt-1.5 text-xs text-[#6B7280]">
-                  ~{coveragePct}% of {yeeling!.name}&apos;s daily calories
+                  ~{coveragePct}% of {primary!.name}&apos;s daily calories
                 </p>
               )}
             </Card>
@@ -129,7 +148,7 @@ export function MealCard({ recipe: initialRecipe, label, allRecipes }: MealCardP
       </AnimatePresence>
 
       <RecipeSheet
-        recipe={recipe}
+        meal={meal}
         open={sheetOpen}
         onClose={() => setSheetOpen(false)}
       />

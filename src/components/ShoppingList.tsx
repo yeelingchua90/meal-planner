@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Separator } from '@/components/ui/separator';
-import { Ingredient, recipes } from '@/data/recipes';
-import { weekMealPlan, DayKey, DAYS } from '@/data/mealPlan';
+import { Ingredient } from '@/data/recipes';
+import { allComposedMeals } from '@/data/mealPlan';
 import { formatCost } from '@/lib/utils';
 
 interface AggregatedItem {
@@ -17,27 +17,20 @@ interface AggregatedItem {
 function aggregateIngredients(): AggregatedItem[] {
   const map = new Map<string, AggregatedItem>();
 
-  const allRecipeIds = DAYS.flatMap(({ key }) => {
-    const day = weekMealPlan[key as DayKey];
-    return [day.breakfastId, day.lunchId, day.dinnerId];
-  });
+  const allIngredients: Ingredient[] = allComposedMeals.flatMap((m) => m.allIngredients);
 
-  for (const id of allRecipeIds) {
-    const recipe = recipes.find((r) => r.id === id);
-    if (!recipe) continue;
-    for (const ing of recipe.ingredients) {
-      const existing = map.get(ing.name);
-      if (existing) {
-        existing.quantities.push(ing.quantity);
-        existing.totalCost += ing.estimatedCostSGD;
-      } else {
-        map.set(ing.name, {
-          name: ing.name,
-          category: ing.category,
-          quantities: [ing.quantity],
-          totalCost: ing.estimatedCostSGD,
-        });
-      }
+  for (const ing of allIngredients) {
+    const existing = map.get(ing.name);
+    if (existing) {
+      existing.quantities.push(ing.quantity);
+      existing.totalCost += ing.estimatedCostSGD;
+    } else {
+      map.set(ing.name, {
+        name: ing.name,
+        category: ing.category,
+        quantities: [ing.quantity],
+        totalCost: ing.estimatedCostSGD,
+      });
     }
   }
 
@@ -48,8 +41,8 @@ const CATEGORY_ORDER = [
   'Proteins',
   'Vegetables',
   'Grains & Carbs',
-  'Pantry & Sauces',
   'Dairy & Eggs',
+  'Pantry & Sauces',
   'Herbs & Spices',
 ];
 

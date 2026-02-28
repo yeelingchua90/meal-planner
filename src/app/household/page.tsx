@@ -6,7 +6,7 @@ import { useHousehold, MemberWithNutrition } from '@/contexts/HouseholdContext';
 import { ChevronDown, ChevronUp, Users } from 'lucide-react';
 
 function getMemberEmoji(member: MemberWithNutrition) {
-  if (member.gender === 'M') return '👦';
+  if (member.gender === 'M') return member.age <= 12 ? '👦' : '👨';
   return '👩';
 }
 
@@ -55,7 +55,7 @@ const NUTRIENT_EXPLAINERS = [
   { name: 'Fat', desc: 'Brain health and fat-soluble vitamins (A, D, E, K). Don\'t skip it — choose healthy fats.' },
   { name: 'Fibre', desc: 'Gut health and satiety. Keeps everyone full and digestion regular.' },
   { name: 'Calcium', desc: 'Bone and teeth strength — critical for kids aged 6–12 during peak growth.' },
-  { name: 'Iron', desc: 'Carries oxygen in the blood. Especially important for Yeeling and Sister (pre-menopausal).' },
+  { name: 'Iron', desc: 'Carries oxygen in the blood. Especially important for Yeeling and Zann (pre-menopausal).' },
   { name: 'Vitamin C', desc: 'Immune support and helps absorb iron from plant foods.' },
 ];
 
