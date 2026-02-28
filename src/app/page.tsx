@@ -3,10 +3,24 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DayTabs } from '@/components/DayTabs';
-import { MealCard } from '@/components/MealCard';
-import { weekMealPlan, DAYS, DayKey, allComposedMeals } from '@/data/mealPlan';
+import { MealSection } from '@/components/MealSection';
+import { LayoutToggle } from '@/components/LayoutToggle';
+import { ComponentDetailDrawer } from '@/components/ComponentDetailDrawer';
+import { weekMealPlan, DAYS, DayKey } from '@/data/mealPlan';
+import { MealComponent } from '@/data/recipes';
 import { formatCost } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { useHousehold } from '@/contexts/HouseholdContext';
+
+const AVATAR_COLORS = [
+  'bg-blue-500',
+  'bg-purple-500',
+  'bg-green-500',
+  'bg-amber-500',
+  'bg-rose-500',
+  'bg-teal-500',
+  'bg-indigo-500',
+];
 
 function getWeekDateRange(): string {
   const now = new Date();
@@ -28,43 +42,49 @@ function getTotalWeekCost(): number {
   }, 0);
 }
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.05, duration: 0.3, ease: 'easeOut' as const },
-  }),
-};
-
 export default function WeeklyPlanPage() {
   const [activeDay, setActiveDay] = useState<DayKey>('mon');
+  const [layoutMode, setLayoutMode] = useState<'compact' | 'expanded'>('compact');
+  const [selectedComponent, setSelectedComponent] = useState<MealComponent | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { members } = useHousehold();
 
   const dayPlan = weekMealPlan[activeDay];
-  const meals = [
-    { meal: dayPlan.breakfast, label: 'Breakfast' },
-    { meal: dayPlan.lunch,     label: 'Lunch'     },
-    { meal: dayPlan.dinner,    label: 'Dinner'    },
-  ];
-
   const weekCost = getTotalWeekCost();
 
+  const handleComponentTap = (component: MealComponent) => {
+    setSelectedComponent(component);
+    setIsDrawerOpen(true);
+  };
+
   return (
-    <div className="px-4 pt-6">
+    <div className="max-w-md mx-auto px-4 pt-6 pb-24">
       {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-start justify-between">
+      <div className="mb-5">
+        <div className="flex items-start justify-between mb-3">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-[#0A0A0A]">
-              MealPlanner
-            </h1>
-            <p className="mt-0.5 text-sm text-[#6B7280]">
-              {getWeekDateRange()} · 👨‍👩‍👧‍👦
-            </p>
+            <h1 className="text-xl font-bold text-[#0A0A0A]">MealPlanner</h1>
+            <p className="text-sm text-gray-500 mt-0.5">{getWeekDateRange()}</p>
           </div>
-          <Badge className="rounded-full bg-[#2563EB] text-white px-3 py-1 text-sm font-semibold hover:bg-[#1d4ed8]">
-            {formatCost(weekCost)}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <LayoutToggle mode={layoutMode} onChange={setLayoutMode} />
+            <Badge className="rounded-full bg-[#2563EB] text-white px-3 py-1 text-sm font-semibold hover:bg-[#1d4ed8]">
+              {formatCost(weekCost)}
+            </Badge>
+          </div>
+        </div>
+
+        {/* Household avatars */}
+        <div className="flex gap-1.5 flex-wrap">
+          {members.map((member, i) => (
+            <div
+              key={member.id}
+              className={`w-7 h-7 rounded-full ${AVATAR_COLORS[i % AVATAR_COLORS.length]} flex items-center justify-center text-white text-xs font-bold shrink-0`}
+              title={member.name}
+            >
+              {member.name.slice(0, 1)}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -73,7 +93,7 @@ export default function WeeklyPlanPage() {
         <DayTabs activeDay={activeDay} onSelect={setActiveDay} />
       </div>
 
-      {/* Meal cards with stagger + day-switch fade */}
+      {/* Meal sections */}
       <AnimatePresence mode="wait">
         <motion.div
           key={activeDay}
@@ -81,21 +101,37 @@ export default function WeeklyPlanPage() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
-          className="space-y-3"
         >
-          {meals.map(({ meal, label }, i) => (
-            <motion.div
-              key={`${activeDay}-${label}`}
-              custom={i}
-              variants={cardVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <MealCard meal={meal} label={label} allMeals={allComposedMeals} />
-            </motion.div>
-          ))}
+          <MealSection
+            label="Breakfast"
+            meal={dayPlan.breakfast}
+            layoutMode={layoutMode}
+            emoji="🌅"
+            onComponentTap={handleComponentTap}
+          />
+          <MealSection
+            label="Lunch"
+            meal={dayPlan.lunch}
+            layoutMode={layoutMode}
+            emoji="☀️"
+            onComponentTap={handleComponentTap}
+          />
+          <MealSection
+            label="Dinner"
+            meal={dayPlan.dinner}
+            layoutMode={layoutMode}
+            emoji="🌙"
+            onComponentTap={handleComponentTap}
+          />
         </motion.div>
       </AnimatePresence>
+
+      {/* Component detail drawer */}
+      <ComponentDetailDrawer
+        component={selectedComponent}
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
     </div>
   );
 }
