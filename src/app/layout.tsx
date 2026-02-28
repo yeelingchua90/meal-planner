@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { BottomNav } from '@/components/BottomNav';
+import { HouseholdProvider } from '@/contexts/HouseholdContext';
 
 export const metadata: Metadata = {
   title: 'MealPlanner',
@@ -21,10 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased bg-[#FAFAFA] min-h-screen">
-        <main className="mx-auto max-w-md pb-24">
-          {children}
-        </main>
-        <BottomNav />
+        <HouseholdProvider>
+          <main className="mx-auto max-w-md pb-24">
+            {children}
+          </main>
+          <BottomNav />
+        </HouseholdProvider>
       </body>
     </html>
   );

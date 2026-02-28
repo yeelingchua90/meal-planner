@@ -5,6 +5,12 @@ export interface Ingredient {
   estimatedCostSGD: number;
 }
 
+export interface MealComponents {
+  base?: string;
+  protein?: string;
+  vegetable?: string;
+}
+
 export interface Recipe {
   id: string;
   name: string;
@@ -23,6 +29,7 @@ export interface Recipe {
   kidFriendly: boolean;
   hasVeg: boolean;
   instructions: string[];
+  components?: MealComponents;
 }
 
 export const recipes: Recipe[] = [
@@ -586,6 +593,7 @@ export const recipes: Recipe[] = [
       'Heat oil until smoking; pour over fish — it will sizzle.',
       'Garnish with fresh spring onion and coriander. Serve immediately.',
     ],
+    components: { base: 'Steamed white rice', protein: 'Steamed Fish with Ginger & Soy', vegetable: 'Stir-Fry Kai Lan' },
   },
   {
     id: 'sambal-chicken',
@@ -620,6 +628,7 @@ export const recipes: Recipe[] = [
       'Blanch long beans until tender-crisp.',
       'Cook rice. Serve chicken sambal over rice with long beans and lime.',
     ],
+    components: { base: 'Steamed jasmine rice', protein: 'Sambal Chicken', vegetable: 'Blanched long beans' },
   },
   {
     id: 'kai-lan-oyster',
@@ -652,6 +661,7 @@ export const recipes: Recipe[] = [
       'Add kai lan and stir-fry on high heat for 2 minutes.',
       'Drizzle oyster sauce and sesame oil over; toss and serve with rice.',
     ],
+    components: { base: 'Steamed white rice', vegetable: 'Stir-Fry Kai Lan with Oyster Sauce' },
   },
   {
     id: 'braised-pork-belly',
@@ -688,6 +698,7 @@ export const recipes: Recipe[] = [
       'Add eggs in the last 20 minutes to colour them in the braise.',
       'Blanch bok choy. Serve pork and eggs over rice with bok choy.',
     ],
+    components: { base: 'Steamed white rice', protein: 'Braised Pork Belly & Eggs', vegetable: 'Blanched bok choy' },
   },
   {
     id: 'prawn-omelette',
@@ -723,6 +734,7 @@ export const recipes: Recipe[] = [
       'Place prawns in centre; fold omelette and cook 1 more minute.',
       'Garnish with spring onion. Serve with rice and blanched chye sim.',
     ],
+    components: { base: 'Steamed white rice', protein: 'Prawn Omelette', vegetable: 'Blanched chye sim' },
   },
   {
     id: 'tofu-claypot',
@@ -760,6 +772,7 @@ export const recipes: Recipe[] = [
       'Gently add tofu; simmer 5 minutes. Thicken with cornstarch slurry.',
       'Finish with sesame oil. Serve over rice.',
     ],
+    components: { base: 'Steamed white rice', protein: 'Tofu & Minced Pork Claypot', vegetable: 'Stir-fried mushrooms' },
   },
   {
     id: 'sweet-sour-pork',
@@ -797,6 +810,7 @@ export const recipes: Recipe[] = [
       'Pour sauce into wok; add pineapple and bring to boil.',
       'Toss pork in sauce to coat. Serve over rice.',
     ],
+    components: { base: 'Steamed white rice', protein: 'Sweet & Sour Pork', vegetable: 'Bell peppers & pineapple' },
   },
   {
     id: 'chicken-potato-curry',
@@ -833,6 +847,7 @@ export const recipes: Recipe[] = [
       'Pour in coconut milk; simmer 30 minutes until potatoes are soft.',
       'Adjust seasoning. Serve with rice.',
     ],
+    components: { base: 'Steamed jasmine rice', protein: 'Chicken & Potato Curry', vegetable: 'Potatoes (in curry)' },
   },
   {
     id: 'butter-chicken',
@@ -870,6 +885,7 @@ export const recipes: Recipe[] = [
       'Return to heat; stir in cream and chicken. Simmer 10 minutes.',
       'Serve with rice and naan if available.',
     ],
+    components: { base: 'Steamed jasmine rice', protein: 'Butter Chicken', vegetable: 'Cucumber raita (side)' },
   },
   {
     id: 'beef-hor-fun',
@@ -941,6 +957,7 @@ export const recipes: Recipe[] = [
       'Bake 35 minutes; add broccoli in the last 10 minutes.',
       'Rest chicken 5 minutes before serving.',
     ],
+    components: { base: 'Roasted potato wedges', protein: 'Lemon Herb Baked Chicken', vegetable: 'Roasted broccoli' },
   },
   {
     id: 'egg-fried-rice',
@@ -1011,5 +1028,6 @@ export const recipes: Recipe[] = [
       'Steam or blanch broccoli.',
       'Slice chicken; garnish with sesame seeds. Serve with rice and broccoli.',
     ],
+    components: { base: 'Steamed jasmine rice', protein: 'Teriyaki Chicken', vegetable: 'Steamed broccoli' },
   },
 ];

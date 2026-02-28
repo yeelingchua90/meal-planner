@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { CalendarDays, ShoppingCart, BookOpen } from 'lucide-react';
+import { CalendarDays, ShoppingCart, BookOpen, Users } from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Plan', Icon: CalendarDays },
   { href: '/shopping', label: 'Shopping', Icon: ShoppingCart },
   { href: '/recipes', label: 'Recipes', Icon: BookOpen },
+  { href: '/household', label: 'Household', Icon: Users },
 ];
 
 export function BottomNav() {

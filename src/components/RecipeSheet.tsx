@@ -7,6 +7,20 @@ import { Recipe } from '@/data/recipes';
 import { MacroBar } from '@/components/MacroBar';
 import { formatCost, formatCalories, formatTime } from '@/lib/utils';
 import { Clock, ChefHat, Flame } from 'lucide-react';
+import { useHousehold } from '@/contexts/HouseholdContext';
+
+function portionLabel(ratio: number): string {
+  if (ratio >= 1.15) return '1¼ servings';
+  if (ratio >= 0.9) return '1 serving (adult portion)';
+  if (ratio >= 0.7) return '¾ serving';
+  if (ratio >= 0.55) return '½–¾ serving';
+  return '½ serving';
+}
+
+function memberEmoji(gender: 'M' | 'F', age: number): string {
+  if (gender === 'M') return age <= 12 ? '👦' : '👨';
+  return '👩';
+}
 
 interface RecipeSheetProps {
   recipe: Recipe | null;
@@ -15,6 +29,7 @@ interface RecipeSheetProps {
 }
 
 export function RecipeSheet({ recipe, open, onClose }: RecipeSheetProps) {
+  const { members } = useHousehold();
   if (!recipe) return null;
 
   const totalTime = recipe.prepMins + recipe.cookMins;
@@ -92,6 +107,35 @@ export function RecipeSheet({ recipe, open, onClose }: RecipeSheetProps) {
             ))}
           </ul>
         </div>
+
+        <Separator className="my-4" />
+
+        {/* Portions */}
+        {members.length > 0 && (
+          <div className="mb-4">
+            <p className="text-sm font-semibold uppercase tracking-wide text-[#6B7280] mb-3">Recommended Portions</p>
+            <ul className="space-y-2">
+              {members.map((member) => {
+                const ratio = member.nutrition.calories / 1800; // relative to a standard adult baseline
+                return (
+                  <li key={member.id} className="flex items-center justify-between">
+                    <span className="text-sm text-[#0A0A0A] flex items-center gap-1.5">
+                      <span>{memberEmoji(member.gender, member.age)}</span>
+                      <span>{member.name}</span>
+                      {member.age <= 12 && (
+                        <span className="text-[#6B7280] text-xs">({member.age})</span>
+                      )}
+                    </span>
+                    <span className="text-sm text-[#6B7280]">{portionLabel(ratio)}</span>
+                  </li>
+                );
+              })}
+            </ul>
+            <p className="text-xs text-[#6B7280] mt-2 italic">
+              Based on calorie needs relative to a standard adult portion
+            </p>
+          </div>
+        )}
 
         <Separator className="my-4" />
 

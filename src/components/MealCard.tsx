@@ -10,6 +10,7 @@ import { RecipeSheet } from '@/components/RecipeSheet';
 import { Recipe } from '@/data/recipes';
 import { formatCalories, formatTime, formatCost } from '@/lib/utils';
 import { Shuffle, Clock, Flame } from 'lucide-react';
+import { useHousehold } from '@/contexts/HouseholdContext';
 
 interface MealCardProps {
   recipe: Recipe;
@@ -22,6 +23,11 @@ export function MealCard({ recipe: initialRecipe, label, allRecipes }: MealCardP
   const [sheetOpen, setSheetOpen] = useState(false);
   const [swapping, setSwapping] = useState(false);
   const [key, setKey] = useState(0);
+  const { members } = useHousehold();
+  const yeeling = members.find((m) => m.is_primary);
+  const coveragePct = yeeling
+    ? Math.round((recipe.calories / yeeling.nutrition.calories) * 100)
+    : null;
 
   const handleSwap = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -110,6 +116,13 @@ export function MealCard({ recipe: initialRecipe, label, allRecipes }: MealCardP
                 fat={recipe.fat}
                 className="mt-2"
               />
+
+              {/* Nutrition coverage */}
+              {coveragePct !== null && (
+                <p className="mt-1.5 text-xs text-[#6B7280]">
+                  ~{coveragePct}% of {yeeling!.name}&apos;s daily calories
+                </p>
+              )}
             </Card>
           </motion.div>
         </motion.div>
