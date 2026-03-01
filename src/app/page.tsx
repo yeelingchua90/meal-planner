@@ -22,6 +22,12 @@ const AVATAR_COLORS = [
   'bg-indigo-500',
 ];
 
+function getTodayKey(): DayKey {
+  const day = new Date().getDay(); // 0=Sun, 1=Mon ... 6=Sat
+  const map: Record<number, DayKey> = { 0: 'sat', 1: 'mon', 2: 'tue', 3: 'wed', 4: 'thu', 5: 'fri', 6: 'sat' };
+  return map[day];
+}
+
 function getWeekDateRange(): string {
   const now = new Date();
   const dayOfWeek = now.getDay();
@@ -38,12 +44,13 @@ function getWeekDateRange(): string {
 function getTotalWeekCost(): number {
   return DAYS.reduce((total, { key }) => {
     const day = weekMealPlan[key as DayKey];
-    return total + day.breakfast.totalCost + day.lunch.totalCost + day.dinner.totalCost;
+    const yeeling = day.yeelingsLunch?.totalCost ?? 0;
+    return total + day.breakfast.totalCost + day.lunch.totalCost + day.dinner.totalCost + yeeling;
   }, 0);
 }
 
 export default function WeeklyPlanPage() {
-  const [activeDay, setActiveDay] = useState<DayKey>('mon');
+  const [activeDay, setActiveDay] = useState<DayKey>(getTodayKey);
   const [layoutMode, setLayoutMode] = useState<'compact' | 'expanded'>('compact');
   const [selectedComponent, setSelectedComponent] = useState<MealComponent | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -109,6 +116,16 @@ export default function WeeklyPlanPage() {
             emoji="🌅"
             onComponentTap={handleComponentTap}
           />
+          {dayPlan.yeelingsLunch && (
+            <MealSection
+              label="Yeeling's Lunch (12pm)"
+              meal={dayPlan.yeelingsLunch}
+              layoutMode={layoutMode}
+              emoji="🌿"
+              onComponentTap={handleComponentTap}
+              labelColor="text-teal-500"
+            />
+          )}
           <MealSection
             label="Lunch"
             meal={dayPlan.lunch}

@@ -1,16 +1,18 @@
 import { ComposedMeal, buildComposedMeal } from './recipes';
 import {
   // Bases
-  steamedWhiteRice, steamedBrownRice, plainBeehoon, plainNoodles,
+  steamedWhiteRice, plainNoodles,
+  friedRiceKids,
   // Breakfasts
   breadAndEggs, kayaToastEggs,
-  // Proteins
-  steamedFish, sambalChicken, braisedPorkBelly, prawnOmelette,
-  tofuMincedPork, sweetSourPork, chickenCurry, butterChicken,
-  lemonHerbChicken, teriyakiChicken,
+  // Proteins — household
+  steamedFish, tofuMincedPork, chickenCurry,
+  stirFryChickenThigh, steamedEggCustard, sweetSourChicken,
+  // Proteins — Yeeling
+  grilledChickenBreast, salmonFillet, scrambledEggsTofu,
   // Vegetables
   kaiLanOyster, spinachGarlic, mixedVeg, bakChoy,
-  cabbageStirFry, longBeans, cucumberTomato,
+  cabbageStirFry, cucumberSlices, steamedCorn,
 } from './recipes';
 
 export type DayKey = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat';
@@ -28,42 +30,51 @@ export interface DayPlan {
   breakfast: ComposedMeal;
   lunch: ComposedMeal;
   dinner: ComposedMeal;
+  yeelingsLunch?: ComposedMeal; // Yeeling's separate 12pm meal
 }
 
 export const weekMealPlan: Record<DayKey, DayPlan> = {
   mon: {
-    breakfast: buildComposedMeal('mon-breakfast', 'breakfast', { breakfast: breadAndEggs }),
-    lunch:     buildComposedMeal('mon-lunch',     'lunch',     { base: steamedWhiteRice,  protein: steamedFish,       vegetable: kaiLanOyster   }),
-    dinner:    buildComposedMeal('mon-dinner',    'dinner',    { base: steamedBrownRice,  protein: chickenCurry,      vegetable: mixedVeg       }),
+    breakfast:    buildComposedMeal('mon-breakfast',      'breakfast', { breakfast: breadAndEggs }),
+    lunch:        buildComposedMeal('mon-lunch',          'lunch',     { base: friedRiceKids }),
+    dinner:       buildComposedMeal('mon-dinner',         'dinner',    { base: steamedWhiteRice, protein: stirFryChickenThigh, vegetable: kaiLanOyster }),
+    yeelingsLunch: buildComposedMeal('mon-yeeling-lunch', 'lunch',     { protein: grilledChickenBreast, vegetable: kaiLanOyster }),
   },
   tue: {
-    breakfast: buildComposedMeal('tue-breakfast', 'breakfast', { breakfast: breadAndEggs }),
-    lunch:     buildComposedMeal('tue-lunch',     'lunch',     { base: plainBeehoon,      protein: prawnOmelette,     vegetable: bakChoy        }),
-    dinner:    buildComposedMeal('tue-dinner',    'dinner',    { base: steamedWhiteRice,  protein: braisedPorkBelly,  vegetable: spinachGarlic  }),
+    breakfast:    buildComposedMeal('tue-breakfast',      'breakfast', { breakfast: kayaToastEggs }),
+    lunch:        buildComposedMeal('tue-lunch',          'lunch',     { base: plainNoodles }),
+    dinner:       buildComposedMeal('tue-dinner',         'dinner',    { base: steamedWhiteRice, protein: tofuMincedPork, vegetable: steamedCorn }),
+    yeelingsLunch: buildComposedMeal('tue-yeeling-lunch', 'lunch',     { protein: scrambledEggsTofu, vegetable: bakChoy }),
   },
   wed: {
-    breakfast: buildComposedMeal('wed-breakfast', 'breakfast', { breakfast: breadAndEggs }),
-    lunch:     buildComposedMeal('wed-lunch',     'lunch',     { base: steamedWhiteRice,  protein: tofuMincedPork,    vegetable: cabbageStirFry }),
-    dinner:    buildComposedMeal('wed-dinner',    'dinner',    { base: steamedWhiteRice,  protein: lemonHerbChicken,  vegetable: mixedVeg       }),
+    breakfast:    buildComposedMeal('wed-breakfast',      'breakfast', { breakfast: breadAndEggs }),
+    lunch:        buildComposedMeal('wed-lunch',          'lunch',     { base: friedRiceKids }),
+    dinner:       buildComposedMeal('wed-dinner',         'dinner',    { base: steamedWhiteRice, protein: steamedEggCustard, vegetable: cabbageStirFry }),
+    yeelingsLunch: buildComposedMeal('wed-yeeling-lunch', 'lunch',     { protein: salmonFillet, vegetable: cucumberSlices }),
   },
   thu: {
-    breakfast: buildComposedMeal('thu-breakfast', 'breakfast', { breakfast: breadAndEggs }),
-    lunch:     buildComposedMeal('thu-lunch',     'lunch',     { base: plainNoodles,      protein: teriyakiChicken,   vegetable: cucumberTomato }),
-    dinner:    buildComposedMeal('thu-dinner',    'dinner',    { base: steamedWhiteRice,  protein: sweetSourPork,     vegetable: longBeans      }),
+    breakfast:    buildComposedMeal('thu-breakfast',      'breakfast', { breakfast: breadAndEggs }),
+    lunch:        buildComposedMeal('thu-lunch',          'lunch',     { base: plainNoodles }),
+    dinner:       buildComposedMeal('thu-dinner',         'dinner',    { base: steamedWhiteRice, protein: sweetSourChicken, vegetable: cucumberSlices }),
+    yeelingsLunch: buildComposedMeal('thu-yeeling-lunch', 'lunch',     { protein: grilledChickenBreast, vegetable: spinachGarlic }),
   },
   fri: {
-    breakfast: buildComposedMeal('fri-breakfast', 'breakfast', { breakfast: breadAndEggs }),
-    lunch:     buildComposedMeal('fri-lunch',     'lunch',     { base: steamedWhiteRice,  protein: butterChicken,     vegetable: bakChoy        }),
-    dinner:    buildComposedMeal('fri-dinner',    'dinner',    { base: steamedWhiteRice,  protein: sambalChicken,     vegetable: kaiLanOyster   }),
+    breakfast:    buildComposedMeal('fri-breakfast',      'breakfast', { breakfast: kayaToastEggs }),
+    lunch:        buildComposedMeal('fri-lunch',          'lunch',     { base: friedRiceKids }),
+    dinner:       buildComposedMeal('fri-dinner',         'dinner',    { base: steamedWhiteRice, protein: steamedFish, vegetable: kaiLanOyster }),
+    yeelingsLunch: buildComposedMeal('fri-yeeling-lunch', 'lunch',     { protein: scrambledEggsTofu, vegetable: spinachGarlic }),
   },
   sat: {
-    breakfast: buildComposedMeal('sat-breakfast', 'breakfast', { breakfast: kayaToastEggs }),
-    lunch:     buildComposedMeal('sat-lunch',     'lunch',     { base: steamedWhiteRice,  protein: steamedFish,       vegetable: spinachGarlic  }),
-    dinner:    buildComposedMeal('sat-dinner',    'dinner',    { base: steamedBrownRice,  protein: tofuMincedPork,    vegetable: mixedVeg       }),
+    breakfast:    buildComposedMeal('sat-breakfast',      'breakfast', { breakfast: kayaToastEggs }),
+    lunch:        buildComposedMeal('sat-lunch',          'lunch',     { base: steamedWhiteRice, protein: stirFryChickenThigh, vegetable: cucumberSlices }),
+    dinner:       buildComposedMeal('sat-dinner',         'dinner',    { base: steamedWhiteRice, protein: chickenCurry, vegetable: mixedVeg }),
+    yeelingsLunch: buildComposedMeal('sat-yeeling-lunch', 'lunch',     { protein: salmonFillet, vegetable: bakChoy }),
   },
 };
 
 export const allComposedMeals: ComposedMeal[] = DAYS.flatMap(({ key }) => {
   const day = weekMealPlan[key as DayKey];
-  return [day.breakfast, day.lunch, day.dinner];
+  const meals = [day.breakfast, day.lunch, day.dinner];
+  if (day.yeelingsLunch) meals.push(day.yeelingsLunch);
+  return meals;
 });

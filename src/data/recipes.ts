@@ -1047,6 +1047,292 @@ export const bakChoy: MealComponent = {
   ],
 };
 
+// ── NEW REALISTIC PROTEINS ────────────────────────────────────────────────────
+
+export const stirFryChickenThigh: MealComponent = {
+  id: 'stir-fry-chicken-thigh',
+  name: 'Stir-Fry Chicken Thigh',
+  emoji: '🍗',
+  category: 'protein',
+  cuisine: 'Chinese',
+  ingredients: [
+    { name: 'Boneless chicken thighs', quantity: '600g', category: 'Proteins', estimatedCostSGD: 3.00 },
+    { name: 'Oyster sauce', quantity: '2 tbsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.20 },
+    { name: 'Soy sauce', quantity: '1 tbsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.10 },
+    { name: 'Garlic', quantity: '4 cloves minced', category: 'Herbs & Spices', estimatedCostSGD: 0.10 },
+    { name: 'Oil', quantity: '1 tbsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.10 },
+    { name: 'Cornstarch', quantity: '1 tsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.05 },
+  ],
+  totalCostSGD: 3.60,
+  calories: 280,
+  protein: 35,
+  carbs: 4,
+  fat: 13,
+  fibre: 0,
+  prepMins: 10,
+  cookMins: 15,
+  difficulty: 'Easy',
+  kidFriendly: true,
+  instructions: [
+    'Slice chicken thighs into bite-sized pieces.',
+    'Mix oyster sauce, soy sauce and cornstarch as marinade, coat chicken 10 min.',
+    'Heat oil in wok on high, stir-fry garlic until fragrant.',
+    'Add chicken, fry 8–10 min until cooked through and slightly caramelised.',
+  ],
+};
+
+export const steamedEggCustard: MealComponent = {
+  id: 'steamed-egg-custard',
+  name: 'Steamed Egg Custard',
+  emoji: '🥚',
+  category: 'protein',
+  cuisine: 'Chinese',
+  ingredients: [
+    { name: 'Eggs', quantity: '5', category: 'Dairy & Eggs', estimatedCostSGD: 1.50 },
+    { name: 'Chicken stock', quantity: '400ml warm', category: 'Pantry & Sauces', estimatedCostSGD: 0.60 },
+    { name: 'Soy sauce', quantity: '1 tbsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.05 },
+    { name: 'Sesame oil', quantity: '½ tsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.05 },
+    { name: 'Spring onion', quantity: '1 stalk', category: 'Vegetables', estimatedCostSGD: 0.05 },
+  ],
+  totalCostSGD: 2.30,
+  calories: 180,
+  protein: 16,
+  carbs: 2,
+  fat: 10,
+  fibre: 0,
+  prepMins: 5,
+  cookMins: 20,
+  difficulty: 'Easy',
+  kidFriendly: true,
+  instructions: [
+    'Beat eggs gently, add warm stock in 1:1.5 egg:stock ratio.',
+    'Strain through sieve into a steaming dish.',
+    'Steam on low-medium heat 15–18 min until just set.',
+    'Drizzle with soy sauce, sesame oil, top with spring onion.',
+  ],
+};
+
+export const sweetSourChicken: MealComponent = {
+  id: 'sweet-sour-chicken',
+  name: 'Sweet & Sour Chicken',
+  emoji: '🍗',
+  category: 'protein',
+  cuisine: 'Chinese',
+  ingredients: [
+    { name: 'Boneless chicken thighs', quantity: '500g', category: 'Proteins', estimatedCostSGD: 2.50 },
+    { name: 'Pineapple chunks', quantity: '100g', category: 'Vegetables', estimatedCostSGD: 0.50 },
+    { name: 'Bell pepper', quantity: '1 medium', category: 'Vegetables', estimatedCostSGD: 0.60 },
+    { name: 'Tomato ketchup', quantity: '3 tbsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.20 },
+    { name: 'Vinegar', quantity: '2 tbsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.10 },
+    { name: 'Sugar', quantity: '2 tbsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.10 },
+    { name: 'Cornstarch', quantity: '2 tbsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.10 },
+    { name: 'Oil', quantity: 'for frying', category: 'Pantry & Sauces', estimatedCostSGD: 0.30 },
+  ],
+  totalCostSGD: 4.40,
+  calories: 300,
+  protein: 30,
+  carbs: 20,
+  fat: 12,
+  fibre: 1,
+  prepMins: 15,
+  cookMins: 20,
+  difficulty: 'Medium',
+  kidFriendly: true,
+  instructions: [
+    'Cut chicken into cubes, coat in cornstarch.',
+    'Shallow-fry chicken until golden and cooked through. Drain.',
+    'Mix ketchup, vinegar and sugar for sauce. Simmer 2 min.',
+    'Toss chicken, pineapple and bell pepper in sauce. Serve hot.',
+  ],
+};
+
+// Yeeling's lunch proteins (high-protein, low-carb)
+
+export const grilledChickenBreast: MealComponent = {
+  id: 'grilled-chicken-breast',
+  name: 'Grilled Chicken Breast',
+  emoji: '🍗',
+  category: 'protein',
+  cuisine: 'Universal',
+  ingredients: [
+    { name: 'Chicken breast', quantity: '200g', category: 'Proteins', estimatedCostSGD: 1.50 },
+    { name: 'Garlic', quantity: '2 cloves minced', category: 'Herbs & Spices', estimatedCostSGD: 0.05 },
+    { name: 'Olive oil', quantity: '1 tsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.10 },
+    { name: 'Salt and pepper', quantity: 'to taste', category: 'Herbs & Spices', estimatedCostSGD: 0.05 },
+    { name: 'Soy sauce', quantity: '1 tsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.05 },
+  ],
+  totalCostSGD: 1.80,
+  calories: 200,
+  protein: 38,
+  carbs: 2,
+  fat: 5,
+  fibre: 0,
+  prepMins: 5,
+  cookMins: 12,
+  difficulty: 'Easy',
+  kidFriendly: false,
+  instructions: [
+    'Pound chicken breast to even thickness.',
+    'Marinate with garlic, olive oil, soy sauce, salt and pepper 10 min.',
+    'Grill or pan-sear on medium-high 5–6 min each side.',
+    'Rest 3 min before slicing.',
+  ],
+};
+
+export const salmonFillet: MealComponent = {
+  id: 'salmon-fillet',
+  name: 'Pan-Seared Salmon',
+  emoji: '🐟',
+  category: 'protein',
+  cuisine: 'Western',
+  ingredients: [
+    { name: 'Salmon fillet', quantity: '180g', category: 'Proteins', estimatedCostSGD: 4.50 },
+    { name: 'Lemon', quantity: '½', category: 'Vegetables', estimatedCostSGD: 0.20 },
+    { name: 'Olive oil', quantity: '1 tsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.10 },
+    { name: 'Salt and pepper', quantity: 'to taste', category: 'Herbs & Spices', estimatedCostSGD: 0.05 },
+    { name: 'Garlic', quantity: '1 clove', category: 'Herbs & Spices', estimatedCostSGD: 0.05 },
+  ],
+  totalCostSGD: 4.90,
+  calories: 250,
+  protein: 34,
+  carbs: 1,
+  fat: 14,
+  fibre: 0,
+  prepMins: 5,
+  cookMins: 8,
+  difficulty: 'Easy',
+  kidFriendly: false,
+  instructions: [
+    'Pat salmon dry, season with salt and pepper.',
+    'Heat oil in pan on medium-high.',
+    'Sear skin-side down 4 min, flip and cook 2–3 min.',
+    'Finish with lemon juice and garlic.',
+  ],
+};
+
+export const scrambledEggsTofu: MealComponent = {
+  id: 'scrambled-eggs-tofu',
+  name: 'Scrambled Eggs with Tofu',
+  emoji: '🥚',
+  category: 'protein',
+  cuisine: 'Chinese',
+  ingredients: [
+    { name: 'Eggs', quantity: '3', category: 'Dairy & Eggs', estimatedCostSGD: 0.90 },
+    { name: 'Silken tofu', quantity: '150g', category: 'Proteins', estimatedCostSGD: 0.50 },
+    { name: 'Soy sauce', quantity: '1 tsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.05 },
+    { name: 'Sesame oil', quantity: '½ tsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.05 },
+    { name: 'Oil', quantity: '1 tsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.05 },
+    { name: 'Spring onion', quantity: '1 stalk', category: 'Vegetables', estimatedCostSGD: 0.05 },
+  ],
+  totalCostSGD: 1.60,
+  calories: 210,
+  protein: 20,
+  carbs: 4,
+  fat: 13,
+  fibre: 0,
+  prepMins: 5,
+  cookMins: 8,
+  difficulty: 'Easy',
+  kidFriendly: false,
+  instructions: [
+    'Beat eggs, add silken tofu and gently mix (keep some chunks).',
+    'Heat oil in pan over medium.',
+    'Pour egg-tofu mixture and scramble gently until just set.',
+    'Season with soy sauce, sesame oil. Top with spring onion.',
+  ],
+};
+
+// ── NEW BASES ─────────────────────────────────────────────────────────────────
+
+export const friedRiceKids: MealComponent = {
+  id: 'fried-rice-kids',
+  name: 'Kids Fried Rice',
+  emoji: '🍳',
+  category: 'base',
+  cuisine: 'Chinese',
+  ingredients: [
+    { name: 'Cooked jasmine rice (day-old)', quantity: '600g', category: 'Grains & Carbs', estimatedCostSGD: 0.80 },
+    { name: 'Eggs', quantity: '3', category: 'Dairy & Eggs', estimatedCostSGD: 0.90 },
+    { name: 'Soy sauce', quantity: '2 tbsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.10 },
+    { name: 'Garlic', quantity: '3 cloves', category: 'Herbs & Spices', estimatedCostSGD: 0.10 },
+    { name: 'Spring onion', quantity: '2 stalks', category: 'Vegetables', estimatedCostSGD: 0.10 },
+    { name: 'Oil', quantity: '2 tbsp', category: 'Pantry & Sauces', estimatedCostSGD: 0.20 },
+  ],
+  totalCostSGD: 2.20,
+  calories: 380,
+  protein: 14,
+  carbs: 65,
+  fat: 9,
+  fibre: 1,
+  prepMins: 5,
+  cookMins: 10,
+  difficulty: 'Easy',
+  kidFriendly: true,
+  instructions: [
+    'Use cold day-old rice (breaks up better).',
+    'Stir-fry garlic in hot oil, push aside and scramble eggs.',
+    'Add rice, mix well with garlic and egg on high heat.',
+    'Season with soy sauce. Top with spring onion.',
+  ],
+};
+
+// ── NEW VEGETABLES ────────────────────────────────────────────────────────────
+
+export const cucumberSlices: MealComponent = {
+  id: 'cucumber-slices',
+  name: 'Cucumber Slices',
+  emoji: '🥒',
+  category: 'vegetable',
+  cuisine: 'Universal',
+  ingredients: [
+    { name: 'Cucumber', quantity: '2 medium', category: 'Vegetables', estimatedCostSGD: 0.70 },
+    { name: 'Salt', quantity: 'pinch', category: 'Herbs & Spices', estimatedCostSGD: 0.05 },
+  ],
+  totalCostSGD: 0.80,
+  calories: 20,
+  protein: 1,
+  carbs: 4,
+  fat: 0,
+  fibre: 1,
+  prepMins: 3,
+  cookMins: 0,
+  difficulty: 'Easy',
+  kidFriendly: true,
+  instructions: [
+    'Wash and slice cucumber into rounds or sticks.',
+    'Lightly salt if desired. Serve chilled.',
+  ],
+};
+
+export const steamedCorn: MealComponent = {
+  id: 'steamed-corn',
+  name: 'Steamed Sweet Corn',
+  emoji: '🌽',
+  category: 'vegetable',
+  cuisine: 'Universal',
+  ingredients: [
+    { name: 'Sweet corn cobs', quantity: '3 cobs', category: 'Vegetables', estimatedCostSGD: 1.50 },
+    { name: 'Salt', quantity: 'pinch', category: 'Herbs & Spices', estimatedCostSGD: 0.05 },
+    { name: 'Butter', quantity: '1 tsp (optional)', category: 'Dairy & Eggs', estimatedCostSGD: 0.05 },
+  ],
+  totalCostSGD: 1.60,
+  calories: 90,
+  protein: 3,
+  carbs: 20,
+  fat: 1,
+  fibre: 2,
+  prepMins: 3,
+  cookMins: 12,
+  difficulty: 'Easy',
+  kidFriendly: true,
+  instructions: [
+    'Husk and wash corn cobs.',
+    'Steam over boiling water 10–12 min until tender.',
+    'Or microwave: wrap in damp paper towel, cook 3 min per cob.',
+    'Serve as-is or with a tiny knob of butter.',
+  ],
+};
+
 // ── Builder ───────────────────────────────────────────────────────────────────
 
 export function buildComposedMeal(
