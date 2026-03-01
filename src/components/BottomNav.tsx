@@ -3,11 +3,11 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { CalendarDays, ShoppingCart, BookOpen, Users } from 'lucide-react';
+import { CalendarDays, Wallet, BookOpen, Users } from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Plan', Icon: CalendarDays },
-  { href: '/shopping', label: 'Shopping', Icon: ShoppingCart },
+  { href: '/shopping', label: 'Budget', Icon: Wallet },
   { href: '/recipes', label: 'Recipes', Icon: BookOpen },
   { href: '/household', label: 'Household', Icon: Users },
 ];
