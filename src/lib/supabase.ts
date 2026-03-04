@@ -122,3 +122,174 @@ export async function deleteReceipt(id: string): Promise<void> {
   const { error } = await supabase.from('receipts').delete().eq('id', id);
   if (error) throw error;
 }
+
+// ─── Chef Alexis Gamification ────────────────────────────────────────────────
+
+export type Tier = 'common' | 'rare' | 'epic' | 'legendary';
+
+export const TIER_META: Record<Tier, { label: string; points: number; color: string; border: string; emoji: string }> = {
+  common:    { label: 'Common',    points: 5,  color: 'bg-green-100',  border: 'border-green-400',  emoji: '🟢' },
+  rare:      { label: 'Rare',      points: 15, color: 'bg-blue-100',   border: 'border-blue-500',   emoji: '🔵' },
+  epic:      { label: 'Epic',      points: 30, color: 'bg-purple-100', border: 'border-purple-600', emoji: '🟣' },
+  legendary: { label: 'Legendary', points: 50, color: 'bg-amber-100',  border: 'border-amber-500',  emoji: '⭐' },
+};
+
+export interface FoodCard {
+  id: string;
+  name: string;
+  description?: string;
+  emoji: string;
+  tier: Tier;
+  base_points: number;
+  is_challenge_card: boolean;
+  is_active: boolean;
+}
+
+export interface WeeklyDraft {
+  id: string;
+  week_start: string;
+  day_of_week: number;
+  food_card_id: string;
+  food_card?: FoodCard;
+}
+
+export type MealStatus = 'clean_plate' | 'half' | 'tried' | 'skipped';
+
+export interface MealRecord {
+  id: string;
+  weekly_draft_id: string;
+  kid_name: string;
+  status: MealStatus;
+  proof_photo_url?: string;
+  critic_rating?: number;
+  points_earned: number;
+  recorded_at: string;
+}
+
+export interface PointLedger {
+  id: string;
+  kid_name: string;
+  amount: number;
+  reason: string;
+  created_at: string;
+}
+
+export async function getFoodCards(): Promise<FoodCard[]> {
+  const { data, error } = await supabase
+    .from('food_cards')
+    .select('*')
+    .eq('is_active', true)
+    .order('tier', { ascending: true })
+    .order('name', { ascending: true });
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function addFoodCard(card: Omit<FoodCard, 'id' | 'is_active'>): Promise<FoodCard> {
+  const { data, error } = await supabase
+    .from('food_cards')
+    .insert({ ...card, is_active: true })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function setChallengeCard(cardId: string): Promise<void> {
+  // Clear existing challenge flag, then set the new one
+  await supabase.from('food_cards').update({ is_challenge_card: false }).eq('is_challenge_card', true);
+  const { error } = await supabase.from('food_cards').update({ is_challenge_card: true }).eq('id', cardId);
+  if (error) throw error;
+}
+
+export async function getWeeklyDraft(weekStart: string): Promise<WeeklyDraft[]> {
+  const { data, error } = await supabase
+    .from('weekly_drafts')
+    .select('*, food_card:food_cards(*)')
+    .eq('week_start', weekStart)
+    .order('day_of_week', { ascending: true });
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function saveDraftPick(weekStart: string, dayOfWeek: number, foodCardId: string): Promise<void> {
+  const { error } = await supabase
+    .from('weekly_drafts')
+    .upsert({ week_start: weekStart, day_of_week: dayOfWeek, food_card_id: foodCardId }, { onConflict: 'week_start,day_of_week' });
+  if (error) throw error;
+}
+
+export async function getMealRecords(weeklyDraftId: string): Promise<MealRecord[]> {
+  const { data, error } = await supabase
+    .from('meal_records')
+    .select('*')
+    .eq('weekly_draft_id', weeklyDraftId);
+  if (error) throw error;
+  return data ?? [];
+}
+
+type RawMealRecord = MealRecord & {
+  weekly_draft?: { food_card?: FoodCard } | null;
+};
+
+function flattenMealRecord(r: RawMealRecord): MealRecord & { food_card?: FoodCard } {
+  const { weekly_draft, ...rest } = r;
+  return { ...rest, food_card: weekly_draft?.food_card };
+}
+
+export async function getKidMealHistory(kidName: string, limit = 5): Promise<(MealRecord & { food_card?: FoodCard })[]> {
+  const { data, error } = await supabase
+    .from('meal_records')
+    .select('*, weekly_draft:weekly_drafts(*, food_card:food_cards(*))')
+    .eq('kid_name', kidName)
+    .order('recorded_at', { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return (data ?? [] as RawMealRecord[]).map(flattenMealRecord);
+}
+
+export async function getRecentMealActivity(limit = 10): Promise<(MealRecord & { food_card?: FoodCard })[]> {
+  const { data, error } = await supabase
+    .from('meal_records')
+    .select('*, weekly_draft:weekly_drafts(*, food_card:food_cards(*))')
+    .order('recorded_at', { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return (data ?? [] as RawMealRecord[]).map(flattenMealRecord);
+}
+
+export async function recordMeal(record: Omit<MealRecord, 'id' | 'recorded_at'>): Promise<MealRecord> {
+  const { data, error } = await supabase
+    .from('meal_records')
+    .insert(record)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function getKidPoints(kidName: string): Promise<number> {
+  const { data, error } = await supabase
+    .from('point_ledger')
+    .select('amount')
+    .eq('kid_name', kidName);
+  if (error) throw error;
+  return (data ?? []).reduce((sum, row) => sum + row.amount, 0);
+}
+
+export async function addPoints(kidName: string, amount: number, reason: string, mealRecordId?: string): Promise<void> {
+  const { error } = await supabase
+    .from('point_ledger')
+    .insert({ kid_name: kidName, amount, reason, meal_record_id: mealRecordId ?? null });
+  if (error) throw error;
+}
+
+export function computePoints(status: MealStatus, tier: Tier, isChallenge: boolean): number {
+  const base = TIER_META[tier].points;
+  if (status === 'skipped') return 0;
+  if (status === 'tried') return 10;
+  if (status === 'half') return Math.floor(base / 2);
+  // clean_plate
+  const challenge = isChallenge ? 20 : 0;
+  return base + challenge;
+}

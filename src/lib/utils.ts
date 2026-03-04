@@ -23,3 +23,14 @@ export function formatTime(mins: number): string {
   const m = mins % 60;
   return m > 0 ? `${h}h ${m}m` : `${h}h`;
 }
+
+// ─── Day-of-week helpers (0=Monday … 6=Sunday, matching DB schema) ────────────
+
+/** Returns 0=Monday through 6=Sunday (matching our DB schema) */
+export function todayDayOfWeek(): number {
+  const day = new Date().getDay(); // 0=Sun, 1=Mon...6=Sat
+  return day === 0 ? 6 : day - 1;
+}
+
+export const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+export const DAY_SHORTS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];

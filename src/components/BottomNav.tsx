@@ -3,14 +3,18 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { CalendarDays, Wallet, BookOpen, Users } from 'lucide-react';
+import { CalendarDays, Wallet, BookOpen, Users, Gamepad2 } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Plan', Icon: CalendarDays },
-  { href: '/shopping', label: 'Budget', Icon: Wallet },
-  { href: '/recipes', label: 'Recipes', Icon: BookOpen },
-  { href: '/household', label: 'Household', Icon: Users },
+  { href: '/',          label: 'Plan',      Icon: CalendarDays },
+  { href: '/shopping',  label: 'Budget',    Icon: Wallet       },
+  { href: '/recipes',   label: 'Recipes',   Icon: BookOpen     },
+  { href: '/household', label: 'Household', Icon: Users        },
+  { href: '/chef',      label: 'Kids',      Icon: Gamepad2     },
 ];
+
+// Kid sub-routes share the "Kids" active state
+const KID_ROUTES = ['/chef', '/critic', '/adventurer', '/parent'];
 
 export function BottomNav() {
   const pathname = usePathname();
@@ -19,7 +23,10 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#E5E7EB] bg-white pb-safe">
       <div className="mx-auto flex max-w-md items-center justify-around px-4 py-2">
         {NAV_ITEMS.map(({ href, label, Icon }) => {
-          const isActive = pathname === href;
+          const isActive =
+            href === '/chef'
+              ? KID_ROUTES.includes(pathname)
+              : pathname === href;
           return (
             <Link key={href} href={href} className="flex flex-col items-center gap-0.5">
               <motion.div
