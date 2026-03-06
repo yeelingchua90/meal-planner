@@ -203,10 +203,6 @@ export default function ChefPage() {
         `Planned ${DAY_NAMES[today]}: ${lunchCard!.name} + ${dinnerCard!.name}`
       );
       setCelebrating(true);
-      setTimeout(() => {
-        setCelebrating(false);
-        setSubmitted(true);
-      }, 2500);
     } catch {
       setError('Failed to save. Please try again.');
     } finally {
@@ -445,17 +441,29 @@ export default function ChefPage() {
               <div className="flex justify-center gap-3 mt-4">
                 {lunchCard && (
                   <div className="bg-white/10 rounded-2xl px-4 py-2 text-center">
+                    <p className="text-xs text-white/50 mb-1 uppercase tracking-wide font-bold">Lunch</p>
                     <p className="text-2xl">{lunchCard.emoji}</p>
                     <p className="text-xs text-white/70 mt-1">{lunchCard.name}</p>
                   </div>
                 )}
                 {dinnerCard && (
                   <div className="bg-white/10 rounded-2xl px-4 py-2 text-center">
+                    <p className="text-xs text-white/50 mb-1 uppercase tracking-wide font-bold">Dinner</p>
                     <p className="text-2xl">{dinnerCard.emoji}</p>
                     <p className="text-xs text-white/70 mt-1">{dinnerCard.name}</p>
                   </div>
                 )}
               </div>
+              <motion.button
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => { setCelebrating(false); setSubmitted(true); }}
+                className="mt-8 px-8 py-4 rounded-2xl bg-[#F5B731] text-[#1a1a1a] font-black text-lg shadow-lg shadow-amber-400/30 hover:bg-[#e0a82e]"
+              >
+                See you at dinner! 🍴
+              </motion.button>
             </motion.div>
           </motion.div>
         )}

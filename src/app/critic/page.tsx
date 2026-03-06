@@ -76,7 +76,7 @@ export default function CriticPage() {
         getWeeklyDraft(weekStart),
         getKidMealHistory('Aleric', 5),
       ]);
-      const todayEntry = drafts.find(d => d.day_of_week === today) ?? null;
+      const todayEntry = drafts.find(d => d.day_of_week === today + 7) ?? null;
       setTodayDraft(todayEntry);
       setHistory(hist);
     } catch {
@@ -156,8 +156,8 @@ export default function CriticPage() {
             ) : (
               <div className="rounded-3xl border-2 border-dashed border-[#D1D5DB] bg-white p-8 text-center">
                 <p className="text-4xl mb-2">🍽️</p>
-                <p className="text-sm text-[#6B7280]">No meal planned for today yet.</p>
-                <p className="text-xs text-[#9CA3AF] mt-1">Sous Chef Alexis needs to submit the weekly menu first.</p>
+                <p className="text-sm text-[#6B7280] font-semibold">Dinner hasn&apos;t been picked yet — check back later!</p>
+                <p className="text-xs text-[#9CA3AF] mt-1">Sous Chef Alexis needs to pick tonight&apos;s dinner first.</p>
               </div>
             )}
 
