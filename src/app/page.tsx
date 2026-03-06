@@ -101,8 +101,11 @@ export default function HomePage() {
         >
           🍳
         </motion.p>
-        <h1 className="text-3xl font-black text-[#1a1a1a] tracking-tight">Oikos Kitchen</h1>
-        <p className="text-sm text-[#6B7280] mt-1">Who are you today?</p>
+        <div className="inline-flex items-center gap-1.5 bg-white border border-[#E5E7EB] rounded-full px-3 py-1 mb-2 shadow-sm">
+          <span className="text-xs font-black tracking-widest text-[#2D8B6E] uppercase">Oikos Kitchen</span>
+        </div>
+        <h1 className="text-3xl font-black text-[#1a1a1a] tracking-tight">Who are you today?</h1>
+        <p className="text-sm text-[#6B7280] mt-1">{new Date().toLocaleDateString('en-SG', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
       </motion.div>
 
       <div className="space-y-3">
