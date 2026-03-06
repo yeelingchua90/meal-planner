@@ -114,7 +114,7 @@ export default function CriticPage() {
   const card = todayDraft?.food_card;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-yellow-50 to-amber-50">
+    <div className="min-h-screen bg-[#F5F0E8]">
       <KidNav />
 
       <div className="px-4 py-6 space-y-5">
@@ -157,7 +157,7 @@ export default function CriticPage() {
               <div className="rounded-3xl border-2 border-dashed border-[#D1D5DB] bg-white p-8 text-center">
                 <p className="text-4xl mb-2">🍽️</p>
                 <p className="text-sm text-[#6B7280]">No meal planned for today yet.</p>
-                <p className="text-xs text-[#9CA3AF] mt-1">Alexis needs to submit the weekly menu first.</p>
+                <p className="text-xs text-[#9CA3AF] mt-1">Sous Chef Alexis needs to submit the weekly menu first.</p>
               </div>
             )}
 
@@ -205,7 +205,7 @@ export default function CriticPage() {
                       value={verdict}
                       onChange={e => setVerdict(e.target.value)}
                       placeholder="e.g. The sauce was really good!"
-                      className="mt-1 w-full rounded-xl border border-[#E5E7EB] px-3 py-2.5 text-sm bg-[#FAFAFA] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]"
+                      className="mt-1 w-full rounded-xl border border-[#E5E7EB] px-3 py-2.5 text-sm bg-[#FAFAFA] focus:outline-none focus:border-[#F5B731] focus:ring-1 focus:ring-[#F5B731]"
                     />
                   </div>
 
@@ -228,19 +228,19 @@ export default function CriticPage() {
             {/* Guest suggestion */}
             <div className="bg-white rounded-3xl border border-[#E5E7EB] shadow-sm p-5">
               <p className="text-sm font-bold text-[#0A0A0A] mb-1">💡 Suggest a meal for next week</p>
-              <p className="text-xs text-[#9CA3AF] mb-3">What would you like Alexis to cook?</p>
+              <p className="text-xs text-[#9CA3AF] mb-3">What would you like Sous Chef Alexis to cook?</p>
               <div className="flex gap-2">
                 <input
                   value={suggestion}
                   onChange={e => setSuggestion(e.target.value)}
                   placeholder="e.g. Laksa, Beef noodles..."
-                  className="flex-1 rounded-xl border border-[#E5E7EB] px-3 py-2.5 text-sm bg-[#FAFAFA] focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB]"
+                  className="flex-1 rounded-xl border border-[#E5E7EB] px-3 py-2.5 text-sm bg-[#FAFAFA] focus:outline-none focus:border-[#F5B731] focus:ring-1 focus:ring-[#F5B731]"
                 />
                 <motion.button
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setSuggestion('')}
                   disabled={!suggestion}
-                  className="px-4 py-2.5 rounded-xl bg-[#2563EB] text-white text-sm font-bold disabled:opacity-40"
+                  className="px-4 py-2.5 rounded-xl bg-[#F5B731] text-white text-sm font-bold disabled:opacity-40"
                 >
                   Send
                 </motion.button>

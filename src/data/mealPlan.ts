@@ -74,7 +74,7 @@ export const weekMealPlan: Record<DayKey, DayPlan> = {
 
 export const allComposedMeals: ComposedMeal[] = DAYS.flatMap(({ key }) => {
   const day = weekMealPlan[key as DayKey];
-  const meals = [day.breakfast, day.lunch, day.dinner];
+  const meals = [day.lunch, day.dinner];
   if (day.yeelingsLunch) meals.push(day.yeelingsLunch);
   return meals;
 });

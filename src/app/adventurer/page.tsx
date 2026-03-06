@@ -105,7 +105,7 @@ export default function AdventurerPage() {
   const card = todayDraft?.food_card;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-pink-50">
+    <div className="min-h-screen bg-[#F5F0E8]">
       <KidNav />
 
       <div className="px-4 py-6 space-y-6">

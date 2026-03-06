@@ -36,12 +36,12 @@ export function BottomNav() {
               >
                 <Icon
                   className={`h-6 w-6 transition-colors ${
-                    isActive ? 'text-[#2563EB]' : 'text-[#6B7280]'
+                    isActive ? 'text-[#2D8B6E]' : 'text-[#6B7280]'
                   }`}
                 />
                 <span
                   className={`text-xs font-medium transition-colors ${
-                    isActive ? 'text-[#2563EB]' : 'text-[#6B7280]'
+                    isActive ? 'text-[#2D8B6E]' : 'text-[#6B7280]'
                   }`}
                 >
                   {label}

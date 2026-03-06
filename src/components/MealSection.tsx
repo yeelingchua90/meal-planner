@@ -73,7 +73,7 @@ export function MealSection({ label, meal, layoutMode, emoji, onComponentTap, la
       {/* Summary + coverage row */}
       <div className="mt-2 flex items-center justify-end gap-2">
         {coveragePct !== null && (
-          <span className="text-xs text-blue-400">
+          <span className="text-xs text-[#2D8B6E]">
             ~{coveragePct}% of {primary!.name}&apos;s daily calories
           </span>
         )}

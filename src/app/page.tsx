@@ -45,7 +45,7 @@ function getTotalWeekCost(): number {
   return DAYS.reduce((total, { key }) => {
     const day = weekMealPlan[key as DayKey];
     const yeeling = day.yeelingsLunch?.totalCost ?? 0;
-    return total + day.breakfast.totalCost + day.lunch.totalCost + day.dinner.totalCost + yeeling;
+    return total + day.lunch.totalCost + day.dinner.totalCost + yeeling;
   }, 0);
 }
 
@@ -70,12 +70,12 @@ export default function WeeklyPlanPage() {
       <div className="mb-5">
         <div className="flex items-start justify-between mb-3">
           <div>
-            <h1 className="text-xl font-bold text-[#0A0A0A]">MealPlanner</h1>
+            <h1 className="text-xl font-bold text-[#1a1a1a]">Oikos Kitchen</h1>
             <p className="text-sm text-gray-500 mt-0.5">{getWeekDateRange()}</p>
           </div>
           <div className="flex items-center gap-2">
             <LayoutToggle mode={layoutMode} onChange={setLayoutMode} />
-            <Badge className="rounded-full bg-[#2563EB] text-white px-3 py-1 text-sm font-semibold hover:bg-[#1d4ed8]">
+            <Badge className="rounded-full bg-[#F5B731] text-[#1a1a1a] px-3 py-1 text-sm font-semibold hover:bg-[#e0a82e]">
               {formatCost(weekCost)}
             </Badge>
           </div>
@@ -109,13 +109,6 @@ export default function WeeklyPlanPage() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
         >
-          <MealSection
-            label="Breakfast"
-            meal={dayPlan.breakfast}
-            layoutMode={layoutMode}
-            emoji="🌅"
-            onComponentTap={handleComponentTap}
-          />
           {dayPlan.yeelingsLunch && (
             <MealSection
               label="Yeeling's Lunch (12pm)"

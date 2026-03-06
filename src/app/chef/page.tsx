@@ -138,14 +138,14 @@ export default function ChefPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-amber-50">
+    <div className="min-h-screen bg-[#F5F0E8]">
       <KidNav />
 
       <div className="px-4 py-6 space-y-5">
         {/* Header */}
         <div className="text-center space-y-1">
           <h1 className="text-3xl font-black text-[#0A0A0A] tracking-tight">
-            👨‍🍳 Chef Alexis&apos;s Kitchen
+            👨‍🍳 Sous Chef Alexis&apos;s Kitchen
           </h1>
           <p className="text-sm font-medium text-[#6B7280]">
             Pick one dish per day — build this week&apos;s menu!
@@ -218,7 +218,7 @@ export default function ChefPage() {
                           <TierBadge tier={card.tier} />
                         </div>
                         <div className="text-right flex-shrink-0">
-                          <p className="text-sm font-bold text-[#2563EB]">{card.base_points} pts</p>
+                          <p className="text-sm font-bold text-[#2D8B6E]">{card.base_points} pts</p>
                           {!submitted && (
                             <button
                               onClick={() => { setSelectedDay(day); setPickerOpen(true); }}
@@ -233,14 +233,14 @@ export default function ChefPage() {
                       <motion.button
                         whileTap={{ scale: 0.97 }}
                         onClick={() => { setSelectedDay(day); setPickerOpen(true); }}
-                        className="w-full flex items-center gap-3 p-4 rounded-2xl border-2 border-dashed border-[#D1D5DB] bg-white hover:border-[#2563EB] hover:bg-blue-50 transition-colors group"
+                        className="w-full flex items-center gap-3 p-4 rounded-2xl border-2 border-dashed border-[#D1D5DB] bg-white hover:border-[#F5B731] hover:bg-amber-50 transition-colors group"
                       >
                         <div className="w-10 text-center flex-shrink-0">
                           <p className="text-xs font-bold text-[#6B7280] uppercase">{DAY_SHORTS[day]}</p>
                           <p className="text-[10px] text-[#9CA3AF]">{DAY_NAMES[day]}</p>
                         </div>
                         <span className="text-2xl opacity-30 group-hover:opacity-60">🍽️</span>
-                        <p className="text-sm font-semibold text-[#9CA3AF] group-hover:text-[#2563EB] transition-colors">
+                        <p className="text-sm font-semibold text-[#9CA3AF] group-hover:text-[#2D8B6E] transition-colors">
                           Pick a dish →
                         </p>
                       </motion.button>
@@ -256,7 +256,7 @@ export default function ChefPage() {
                 <p className="text-sm font-semibold text-[#374151]">Weekly points potential</p>
                 <p className="text-xs text-[#9CA3AF]">{drafts.length}/7 days picked</p>
               </div>
-              <p className="text-2xl font-black text-[#2563EB]">{weeklyPotential} pts</p>
+              <p className="text-2xl font-black text-[#2D8B6E]">{weeklyPotential} pts</p>
             </div>
 
             {/* Submit button */}
@@ -267,7 +267,7 @@ export default function ChefPage() {
                 disabled={!allPicked || saving}
                 className={`w-full py-4 rounded-2xl font-black text-lg transition-all ${
                   allPicked
-                    ? 'bg-[#2563EB] text-white shadow-lg shadow-blue-200 hover:bg-blue-700'
+                    ? 'bg-[#F5B731] text-[#1a1a1a] shadow-lg shadow-amber-200 hover:bg-[#e0a82e]'
                     : 'bg-[#F3F4F6] text-[#9CA3AF] cursor-not-allowed'
                 }`}
               >
@@ -354,7 +354,7 @@ export default function ChefPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onAnimationComplete={() => setCelebrating(false)}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-blue-600 to-purple-700"
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-[#2D8B6E] to-[#1a5c49]"
           >
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}

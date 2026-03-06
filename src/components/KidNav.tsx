@@ -25,7 +25,7 @@ export function KidNav() {
               transition={{ type: 'spring', stiffness: 400, damping: 17 }}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold transition-colors ${
                 isActive
-                  ? 'bg-[#2563EB] text-white'
+                  ? 'bg-[#F5B731] text-[#1a1a1a]'
                   : 'bg-[#F3F4F6] text-[#374151] hover:bg-[#E5E7EB]'
               }`}
             >

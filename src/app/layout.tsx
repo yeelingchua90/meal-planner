@@ -4,7 +4,7 @@ import { BottomNav } from '@/components/BottomNav';
 import { HouseholdProvider } from '@/contexts/HouseholdContext';
 
 export const metadata: Metadata = {
-  title: 'MealPlanner',
+  title: 'Oikos Kitchen',
   description: 'Family meal planning made simple',
 };
 
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased bg-[#FAFAFA] min-h-screen">
+      <body className="antialiased bg-[#F5F0E8] min-h-screen">
         <HouseholdProvider>
           <main className="mx-auto max-w-md pb-24">
             {children}
