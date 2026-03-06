@@ -128,7 +128,7 @@ export async function deleteReceipt(id: string): Promise<void> {
 export type Tier = 'common' | 'rare' | 'epic' | 'legendary';
 
 export const TIER_META: Record<Tier, { label: string; points: number; color: string; border: string; emoji: string }> = {
-  common:    { label: 'Common',    points: 5,  color: 'bg-green-100',  border: 'border-green-400',  emoji: '🟢' },
+  common:    { label: 'Common',    points: 5,  color: 'bg-gray-100',   border: 'border-gray-400',   emoji: '⚪' },
   rare:      { label: 'Rare',      points: 15, color: 'bg-blue-100',   border: 'border-blue-500',   emoji: '🔵' },
   epic:      { label: 'Epic',      points: 30, color: 'bg-purple-100', border: 'border-purple-600', emoji: '🟣' },
   legendary: { label: 'Legendary', points: 50, color: 'bg-amber-100',  border: 'border-amber-500',  emoji: '⭐' },
