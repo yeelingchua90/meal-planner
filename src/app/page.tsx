@@ -1,147 +1,81 @@
 'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { DayTabs } from '@/components/DayTabs';
-import { MealSection } from '@/components/MealSection';
-import { LayoutToggle } from '@/components/LayoutToggle';
-import { ComponentDetailDrawer } from '@/components/ComponentDetailDrawer';
-import { weekMealPlan, DAYS, DayKey } from '@/data/mealPlan';
-import { MealComponent } from '@/data/recipes';
-import { formatCost } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
-import { useHousehold } from '@/contexts/HouseholdContext';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
-const AVATAR_COLORS = [
-  'bg-blue-500',
-  'bg-purple-500',
-  'bg-green-500',
-  'bg-amber-500',
-  'bg-rose-500',
-  'bg-teal-500',
-  'bg-indigo-500',
+const PROFILES = [
+  {
+    href: '/chef',
+    emoji: '👨‍🍳',
+    name: 'Sous Chef Alexis',
+    subtitle: "Plan today's meals",
+    bg: 'bg-amber-50',
+    border: 'border-amber-300',
+    accent: 'text-amber-700',
+  },
+  {
+    href: '/critic',
+    emoji: '⭐',
+    name: 'Critic Aleric',
+    subtitle: "Rate tonight's dish",
+    bg: 'bg-yellow-50',
+    border: 'border-yellow-300',
+    accent: 'text-yellow-700',
+  },
+  {
+    href: '/adventurer',
+    emoji: '🌟',
+    name: 'Adventurer Axel',
+    subtitle: 'Try something new today',
+    bg: 'bg-purple-50',
+    border: 'border-purple-300',
+    accent: 'text-purple-700',
+  },
+  {
+    href: '/parent',
+    emoji: '🏠',
+    name: 'Parent',
+    subtitle: 'See the family overview',
+    bg: 'bg-teal-50',
+    border: 'border-teal-300',
+    accent: 'text-teal-700',
+  },
 ];
 
-function getTodayKey(): DayKey {
-  const day = new Date().getDay(); // 0=Sun, 1=Mon ... 6=Sat
-  const map: Record<number, DayKey> = { 0: 'sat', 1: 'mon', 2: 'tue', 3: 'wed', 4: 'thu', 5: 'fri', 6: 'sat' };
-  return map[day];
-}
-
-function getWeekDateRange(): string {
-  const now = new Date();
-  const dayOfWeek = now.getDay();
-  const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-  const mon = new Date(now);
-  mon.setDate(now.getDate() + diff);
-  const sat = new Date(mon);
-  sat.setDate(mon.getDate() + 5);
-  const fmt = (d: Date) =>
-    d.toLocaleDateString('en-SG', { day: 'numeric', month: 'short' });
-  return `${fmt(mon)} – ${fmt(sat)}`;
-}
-
-function getTotalWeekCost(): number {
-  return DAYS.reduce((total, { key }) => {
-    const day = weekMealPlan[key as DayKey];
-    const yeeling = day.yeelingsLunch?.totalCost ?? 0;
-    return total + day.lunch.totalCost + day.dinner.totalCost + yeeling;
-  }, 0);
-}
-
-export default function WeeklyPlanPage() {
-  const [activeDay, setActiveDay] = useState<DayKey>(getTodayKey);
-  const [layoutMode, setLayoutMode] = useState<'compact' | 'expanded'>('compact');
-  const [selectedComponent, setSelectedComponent] = useState<MealComponent | null>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { members } = useHousehold();
-
-  const dayPlan = weekMealPlan[activeDay];
-  const weekCost = getTotalWeekCost();
-
-  const handleComponentTap = (component: MealComponent) => {
-    setSelectedComponent(component);
-    setIsDrawerOpen(true);
-  };
-
+export default function HomePage() {
   return (
-    <div className="max-w-md mx-auto px-4 pt-6 pb-24">
-      {/* Header */}
-      <div className="mb-5">
-        <div className="flex items-start justify-between mb-3">
-          <div>
-            <h1 className="text-xl font-bold text-[#1a1a1a]">Oikos Kitchen</h1>
-            <p className="text-sm text-gray-500 mt-0.5">{getWeekDateRange()}</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <LayoutToggle mode={layoutMode} onChange={setLayoutMode} />
-            <Badge className="rounded-full bg-[#F5B731] text-[#1a1a1a] px-3 py-1 text-sm font-semibold hover:bg-[#e0a82e]">
-              {formatCost(weekCost)}
-            </Badge>
-          </div>
-        </div>
-
-        {/* Household avatars */}
-        <div className="flex gap-1.5 flex-wrap">
-          {members.map((member, i) => (
-            <div
-              key={member.id}
-              className={`w-7 h-7 rounded-full ${AVATAR_COLORS[i % AVATAR_COLORS.length]} flex items-center justify-center text-white text-xs font-bold shrink-0`}
-              title={member.name}
-            >
-              {member.name.slice(0, 1)}
-            </div>
-          ))}
-        </div>
+    <div className="min-h-screen bg-[#F5F0E8] px-5 pt-12 pb-28">
+      <div className="mb-10 text-center">
+        <p className="text-5xl mb-3">🍳</p>
+        <h1 className="text-3xl font-black text-[#1a1a1a] tracking-tight">Oikos Kitchen</h1>
+        <p className="text-sm text-[#6B7280] mt-1">Who are you today?</p>
       </div>
 
-      {/* Day tabs */}
-      <div className="mb-4 -mx-4 px-4 border-b border-[#E5E7EB]">
-        <DayTabs activeDay={activeDay} onSelect={setActiveDay} />
+      <div className="space-y-3">
+        {PROFILES.map(({ href, emoji, name, subtitle, bg, border, accent }, i) => (
+          <motion.div
+            key={href}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.07, duration: 0.3 }}
+          >
+            <Link href={href}>
+              <motion.div
+                whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.01 }}
+                className={`flex items-center gap-4 p-4 rounded-2xl border-2 ${bg} ${border} shadow-sm cursor-pointer`}
+              >
+                <span className="text-4xl">{emoji}</span>
+                <div className="flex-1">
+                  <p className="font-black text-[#1a1a1a] text-lg leading-tight">{name}</p>
+                  <p className={`text-sm font-medium mt-0.5 ${accent}`}>{subtitle}</p>
+                </div>
+                <span className="text-[#9CA3AF] text-xl font-bold">›</span>
+              </motion.div>
+            </Link>
+          </motion.div>
+        ))}
       </div>
-
-      {/* Meal sections */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeDay}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.15 }}
-        >
-          {dayPlan.yeelingsLunch && (
-            <MealSection
-              label="Yeeling's Lunch (12pm)"
-              meal={dayPlan.yeelingsLunch}
-              layoutMode={layoutMode}
-              emoji="🌿"
-              onComponentTap={handleComponentTap}
-              labelColor="text-teal-500"
-            />
-          )}
-          <MealSection
-            label="Lunch"
-            meal={dayPlan.lunch}
-            layoutMode={layoutMode}
-            emoji="☀️"
-            onComponentTap={handleComponentTap}
-          />
-          <MealSection
-            label="Dinner"
-            meal={dayPlan.dinner}
-            layoutMode={layoutMode}
-            emoji="🌙"
-            onComponentTap={handleComponentTap}
-          />
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Component detail drawer */}
-      <ComponentDetailDrawer
-        component={selectedComponent}
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-      />
     </div>
   );
 }
