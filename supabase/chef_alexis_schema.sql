@@ -16,11 +16,12 @@ create table food_cards (
   created_at timestamptz default now()
 );
 
--- Weekly draft: Alexis picks 7 cards (one per day Mon-Sun)
+-- Weekly draft: Alexis picks 14 slots per week (lunch + dinner for each day)
+-- day_of_week: 0-6 = Mon-Sun lunch, 7-13 = Mon-Sun dinner
 create table weekly_drafts (
   id uuid primary key default gen_random_uuid(),
   week_start date not null,  -- Monday of that week
-  day_of_week integer not null check (day_of_week between 0 and 6),  -- 0=Mon, 6=Sun
+  day_of_week integer not null check (day_of_week between 0 and 13),  -- 0-6=lunch Mon-Sun, 7-13=dinner Mon-Sun
   food_card_id uuid references food_cards(id),
   draft_order integer,  -- the order Alexis picked
   created_at timestamptz default now(),
