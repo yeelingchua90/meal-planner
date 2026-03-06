@@ -185,6 +185,35 @@ export async function getFoodCards(): Promise<FoodCard[]> {
   return data ?? [];
 }
 
+export async function getAllFoodCards(): Promise<FoodCard[]> {
+  const { data, error } = await supabase
+    .from('food_cards')
+    .select('*')
+    .order('tier', { ascending: true })
+    .order('name', { ascending: true });
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function toggleFoodCardActive(id: string, isActive: boolean): Promise<void> {
+  const { error } = await supabase
+    .from('food_cards')
+    .update({ is_active: isActive })
+    .eq('id', id);
+  if (error) throw error;
+}
+
+export async function createFoodCard(card: { name: string; emoji: string; tier: Tier; description?: string }): Promise<FoodCard> {
+  const base_points = { common: 5, rare: 15, epic: 30, legendary: 50 }[card.tier];
+  const { data, error } = await supabase
+    .from('food_cards')
+    .insert({ ...card, base_points, is_active: true, is_challenge_card: false })
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
 export async function addFoodCard(card: Omit<FoodCard, 'id' | 'is_active'>): Promise<FoodCard> {
   const { data, error } = await supabase
     .from('food_cards')
