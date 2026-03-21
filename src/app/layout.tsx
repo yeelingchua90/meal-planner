@@ -6,6 +6,12 @@ import { HouseholdProvider } from '@/contexts/HouseholdContext';
 export const metadata: Metadata = {
   title: 'Oikos Kitchen',
   description: 'Family meal planning made simple',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Oikos Kitchen',
+  },
 };
 
 export const viewport: Viewport = {

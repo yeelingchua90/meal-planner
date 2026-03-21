@@ -15,7 +15,7 @@ export function KidNav() {
   const pathname = usePathname();
 
   return (
-    <div className="flex gap-1 px-4 py-2 bg-white border-b border-[#E5E7EB] overflow-x-auto">
+    <div className="flex gap-1 px-4 py-2 bg-white border-b border-[#E5E7EB] overflow-x-auto scroll-smooth [-webkit-overflow-scrolling:touch]">
       {KID_TABS.map(({ href, label, emoji }) => {
         const isActive = pathname === href;
         return (
